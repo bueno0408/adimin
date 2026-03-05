@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENGCOM - Orçamento de Quadro Elétrico</title>
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>ENGCOM</h1>
+      <p>Monte seu quadro elétrico personalizado com componentes <strong>WEG</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>1) Cadastro</h2>
+      <div class="grid">
+        <div><label>Nome</label><input id="name" /></div>
+        <div><label>Telefone</label><input id="phone" /></div>
+      </div>
+      <label>Email</label><input id="email" type="email" />
+      <button id="btnRegister">Salvar cadastro</button>
+      <p id="regMsg" class="small"></p>
+    </div>
+
+    <div class="card">
+      <h2>2) Montagem do quadro</h2>
+      <div id="products"></div>
+      <div class="total" id="total">Total: R$ 0,00</div>
+      <label>Observações</label>
+      <textarea id="obs" rows="3" placeholder="Ex.: tensão, aplicação, etc."></textarea>
+      <button id="btnQuote">GERAR ORÇAMENTO</button>
+      <p id="quoteMsg" class="small"></p>
+    </div>
+
+    <div class="card">
+      <p class="small">Painel administrativo: <a href="/admin">/admin</a></p>
+    </div>
+  </div>
+  <script src="/public/app.js"></script>
+</body>
+</html>
