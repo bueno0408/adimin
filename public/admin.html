@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENGCOM Admin</title>
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>ENGCOM ADMIN</h1>
+      <p class="small">Use usuário/senha via autenticação básica do navegador.</p>
+    </div>
+    <div class="card">
+      <h2>Produtos WEG</h2>
+      <div class="grid">
+        <input id="cat" placeholder="Categoria" />
+        <input id="desc" placeholder="Descrição" />
+      </div>
+      <div class="grid">
+        <input id="price" type="number" placeholder="Preço" />
+        <button id="add">Adicionar produto</button>
+      </div>
+      <div id="plist" class="small"></div>
+    </div>
+    <div class="card"><h2>Clientes</h2><div id="customers" class="small"></div></div>
+    <div class="card"><h2>Orçamentos</h2><div id="quotes" class="small"></div></div>
+  </div>
+  <script src="/public/admin.js"></script>
+</body>
+</html>

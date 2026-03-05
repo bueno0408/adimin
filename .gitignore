@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+engcom.db
+sent_emails.log
