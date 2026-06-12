@@ -14,16 +14,28 @@
       <h1>Felipe OS</h1>
       <p>Sistema online da empresa</p>
       <div id="loginStatus" class="status-pill">☁️ Verificando conexão...</div>
+
       <form id="loginForm">
         <label>Usuário</label>
-        <input id="username" autocomplete="username" placeholder="Felipe, ADM ou ESTOQUE" required />
+        <input id="username" autocomplete="username" placeholder="Digite seu usuário" required />
         <label>Senha</label>
-        <input id="password" type="password" autocomplete="current-password" required />
+        <input id="password" type="password" autocomplete="current-password" placeholder="Digite sua senha" required />
         <button class="primary full" type="submit">Entrar</button>
       </form>
+
       <div class="help">
-        <strong>Logins</strong><br />
-        Felipe / 1234<br />ADM / admin123<br />ESTOQUE / estoque123
+        <strong>Criar novo login</strong><br />
+        <span>Use esta área para criar um acesso novo de usuário.</span>
+        <form id="publicCreateForm" class="form" style="margin-top:12px;text-align:left;">
+          <label>Novo usuário</label>
+          <input id="publicNewUsername" autocomplete="off" placeholder="Nome do novo usuário" required />
+          <label>Senha</label>
+          <input id="publicNewPassword" type="password" autocomplete="new-password" placeholder="Crie uma senha" required />
+          <label>Confirmar senha</label>
+          <input id="publicConfirmPassword" type="password" autocomplete="new-password" placeholder="Repita a senha" required />
+          <button class="ghost full" type="submit">Criar login</button>
+        </form>
+        <p class="muted" style="margin:10px 0 0;font-size:12px;">Novos logins entram como perfil Usuário.</p>
       </div>
     </div>
   </section>
@@ -76,5 +88,42 @@
 
   <script src="supabase-config.js"></script>
   <script src="app.js"></script>
+  <script>
+    (function(){
+      const form = document.getElementById('publicCreateForm');
+      if(!form) return;
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const username = document.getElementById('publicNewUsername').value.trim();
+        const password = document.getElementById('publicNewPassword').value;
+        const confirmPassword = document.getElementById('publicConfirmPassword').value;
+
+        if(!username) return alert('Digite um usuário.');
+        if(password.length < 4) return alert('A senha precisa ter pelo menos 4 caracteres.');
+        if(password !== confirmPassword) return alert('As senhas não conferem.');
+
+        try{
+          if(!sb) init();
+          if(!await testDb()) return;
+          const password_hash = await sha256(password);
+          const result = await sb.from('fo_users').insert({ username, password_hash, role:'user' });
+          if(result.error){
+            if(String(result.error.message || '').toLowerCase().includes('duplicate')){
+              alert('Esse usuário já existe. Escolha outro nome.');
+            }else{
+              alert('Erro ao criar login: ' + result.error.message);
+            }
+            return;
+          }
+          document.getElementById('username').value = username;
+          document.getElementById('password').value = '';
+          form.reset();
+          alert('Login criado com sucesso. Agora entre com o usuário e senha cadastrados.');
+        }catch(err){
+          alert('Erro ao criar login: ' + err.message);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
