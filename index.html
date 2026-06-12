@@ -80,7 +80,7 @@
 
       <section id="stock" class="page"><div class="panel"><div class="panel-head"><div><h3>Estoque</h3><p class="muted">Acesso exclusivo do perfil ESTOQUE.</p></div><button id="addStock" class="primary">+ Item</button></div><div class="filters one"><input id="stockSearch" placeholder="Buscar código, item, categoria..." /></div><div class="table-wrap"><table><thead><tr><th>Código</th><th>Item</th><th>Categoria</th><th>Qtd</th><th>Mínimo</th><th>Local</th><th>Ações</th></tr></thead><tbody id="stockTable"></tbody></table></div></div></section>
 
-      <section id="users" class="page"><div class="grid2"><div class="panel"><div class="panel-head"><h3>Criar usuário</h3><span class="pill">ADM</span></div><form id="userForm" class="form"><label>Usuário<input id="newUsername" required /></label><label>Senha<input id="newPassword" type="password" required /></label><label>Perfil<select id="newRole"><option value="user">Usuário</option><option value="stock">Estoque</option><option value="admin">ADM</option></select></label><button class="primary full">Criar</button></form></div><div class="panel"><div class="panel-head"><h3>Usuários</h3></div><div id="usersList" class="mini-list"></div></div></div></section>
+      <section id="users" class="page"><div class="grid2"><div class="panel"><div class="panel-head"><h3>Criar usuário</h3><span class="pill">ADM</span></div><form id="userForm" class="form"><label>Usuário<input id="newUsername" required /></label><label>Senha<input id="newPassword" type="password" required /></label><label>Perfil<select id="newRole"><option value="user">Usuário</option><option value="stock">Estoque</option><option value="admin">ADM</option></select></label><button class="primary full">Criar</button></form></div><div class="panel"><div class="panel-head"><h3>Usuários</h3><span class="pill">Somente ADM</span></div><div id="usersList" class="mini-list"></div></div></div></section>
     </section>
   </main>
 
@@ -88,6 +88,7 @@
 
   <script src="supabase-config.js"></script>
   <script src="app.js"></script>
+  <script src="admin-users-guard.js?v=1"></script>
   <script>
     (function(){
       const form = document.getElementById('publicCreateForm');
