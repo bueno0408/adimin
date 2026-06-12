@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Felipe OS</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="logo">F</div>
+      <h1>Felipe OS</h1>
+      <p>Sistema online da empresa</p>
+      <div id="loginStatus" class="status-pill">☁️ Verificando conexão...</div>
+      <form id="loginForm">
+        <label>Usuário</label>
+        <input id="username" autocomplete="username" placeholder="Felipe, ADM ou ESTOQUE" required />
+        <label>Senha</label>
+        <input id="password" type="password" autocomplete="current-password" required />
+        <button class="primary full" type="submit">Entrar</button>
+      </form>
+      <div class="help">
+        <strong>Logins</strong><br />
+        Felipe / 1234<br />ADM / admin123<br />ESTOQUE / estoque123
+      </div>
+    </div>
+  </section>
+
+  <main id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo small">F</div><div><h2>Felipe OS</h2><p>Supabase Online</p></div></div>
+      <div class="user-card"><span>Usuário</span><strong id="activeUser">---</strong><button id="logoutBtn" class="danger small-btn">Sair</button></div>
+      <div class="user-card"><span>Status</span><strong id="cloudStatus">☁️ Online</strong><p id="lastSync">Atualizado: --</p></div>
+      <nav>
+        <button class="nav-btn active" data-page="dashboard">Painel</button>
+        <button class="nav-btn" data-page="tasks">Tarefas</button>
+        <button class="nav-btn" data-page="calendar">Calendário</button>
+        <button class="nav-btn" data-page="notes">Notas / Faturamento</button>
+        <button class="nav-btn" data-page="dwg">DWG</button>
+        <button class="nav-btn only-stock" data-page="stock">Estoque</button>
+        <button class="nav-btn only-admin" data-page="users">Usuários</button>
+      </nav>
+    </aside>
+
+    <section class="content">
+      <header class="topbar">
+        <div><p class="kicker">SISTEMA ONLINE</p><h1 id="pageTitle">Painel</h1></div>
+        <div class="actions"><button id="refreshBtn" class="ghost">Atualizar</button><button id="themeBtn" class="ghost">Tema</button><button id="newTaskTop" class="primary">+ Tarefa</button></div>
+      </header>
+
+      <section id="dashboard" class="page active">
+        <div class="hero"><div><p class="kicker">Bem-vindo</p><h2>Felipe OS Empresa</h2><p>Dados salvos direto no Supabase e atualizados para todos.</p></div><div class="profile"><span>Perfil</span><strong id="activeRole">---</strong></div></div>
+        <div class="stats"><div class="stat"><span>Abertas</span><strong id="statOpen">0</strong></div><div class="stat"><span>Concluídas</span><strong id="statDone">0</strong></div><div class="stat"><span>Notas</span><strong id="statNotes">0</strong></div><div class="stat"><span>Estoque</span><strong id="statStock">0</strong></div></div>
+        <div class="grid2"><div class="panel"><div class="panel-head"><h3>Próximas tarefas</h3><span class="pill">Online</span></div><div id="dashTasks" class="mini-list"></div></div><div class="panel"><div class="panel-head"><h3>Últimas notas</h3><span class="pill">Faturamento</span></div><div id="dashNotes" class="mini-list"></div></div></div>
+      </section>
+
+      <section id="tasks" class="page">
+        <div class="panel"><div class="panel-head"><div><h3>Tarefas da empresa</h3><p class="muted">Compartilhadas em tempo real.</p></div><button id="addTask" class="primary">+ Criar tarefa</button></div><div class="filters"><input id="taskSearch" placeholder="Buscar tarefa" /><select id="taskStatusFilter"><option value="">Todos</option><option>A Fazer</option><option>Em Andamento</option><option>Concluído</option></select><select id="taskPriorityFilter"><option value="">Prioridade</option><option>Baixa</option><option>Média</option><option>Alta</option><option>Urgente</option></select></div><div class="kanban"><div class="kanban-col"><h4>A Fazer</h4><div id="colTodo"></div></div><div class="kanban-col"><h4>Em Andamento</h4><div id="colDoing"></div></div><div class="kanban-col"><h4>Concluído</h4><div id="colDone"></div></div></div></div>
+      </section>
+
+      <section id="calendar" class="page"><div class="panel"><div class="panel-head"><button id="prevMonth" class="ghost">←</button><h3 id="calendarTitle">Calendário</h3><button id="nextMonth" class="ghost">→</button></div><div id="calendarGrid" class="calendar"></div></div></section>
+
+      <section id="notes" class="page"><div class="panel"><div class="panel-head"><div><h3>Notas / Faturamento</h3><p class="muted">Obras, notas e valores.</p></div><button id="addNote" class="primary">+ Nota</button></div><div class="table-wrap"><table><thead><tr><th>Empresa</th><th>Obra</th><th>Nota</th><th>A faturar</th><th>Faturado</th><th>Status</th><th>Ações</th></tr></thead><tbody id="notesTable"></tbody></table></div></div></section>
+
+      <section id="dwg" class="page"><div class="panel"><div class="panel-head"><div><h3>DWG Online</h3><p class="muted">Pastas e arquivos no Supabase Storage.</p></div><div class="actions"><button id="addFolder" class="ghost">+ Pasta</button><button id="addDwg" class="primary">+ DWG</button></div></div><div id="breadcrumb" class="breadcrumb"></div><div id="dwgList" class="cards"></div></div></section>
+
+      <section id="stock" class="page"><div class="panel"><div class="panel-head"><div><h3>Estoque</h3><p class="muted">Acesso exclusivo do perfil ESTOQUE.</p></div><button id="addStock" class="primary">+ Item</button></div><div class="filters one"><input id="stockSearch" placeholder="Buscar código, item, categoria..." /></div><div class="table-wrap"><table><thead><tr><th>Código</th><th>Item</th><th>Categoria</th><th>Qtd</th><th>Mínimo</th><th>Local</th><th>Ações</th></tr></thead><tbody id="stockTable"></tbody></table></div></div></section>
+
+      <section id="users" class="page"><div class="grid2"><div class="panel"><div class="panel-head"><h3>Criar usuário</h3><span class="pill">ADM</span></div><form id="userForm" class="form"><label>Usuário<input id="newUsername" required /></label><label>Senha<input id="newPassword" type="password" required /></label><label>Perfil<select id="newRole"><option value="user">Usuário</option><option value="stock">Estoque</option><option value="admin">ADM</option></select></label><button class="primary full">Criar</button></form></div><div class="panel"><div class="panel-head"><h3>Usuários</h3></div><div id="usersList" class="mini-list"></div></div></div></section>
+    </section>
+  </main>
+
+  <div id="modal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle">Modal</h3><button id="closeModal" class="icon">×</button></div><div id="modalBody"></div></div></div>
+
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
